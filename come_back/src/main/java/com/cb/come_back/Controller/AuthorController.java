@@ -1,6 +1,8 @@
 package com.cb.come_back.Controller;
 
 import com.cb.come_back.DtoModel.AuthorDto;
+import com.cb.come_back.Entity.Author;
+import com.cb.come_back.Exception_handling.AuthorNotFoundException;
 import com.cb.come_back.Service.AuthorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,11 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveAuthor(@RequestBody AuthorDto authorDto) {
-        if (authorDto == null){
+    public ResponseEntity<Void> saveAuthor(@RequestBody Author author) {
+        if (author == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        authorService.saveAuthor(authorDto);
+        authorService.saveAuthor(author);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

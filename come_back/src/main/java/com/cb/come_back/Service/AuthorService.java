@@ -2,6 +2,8 @@ package com.cb.come_back.Service;
 
 import com.cb.come_back.DtoModel.AuthorDto;
 import com.cb.come_back.Entity.Author;
+import com.cb.come_back.Exception_handling.AuthorCannotBeNull;
+import com.cb.come_back.Exception_handling.AuthorNotFoundException;
 import com.cb.come_back.Mapper.AuthorMapper;
 import com.cb.come_back.Repository.AuthorRepository;
 import lombok.AllArgsConstructor;
@@ -18,17 +20,16 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     @Transactional
-    public void saveAuthor(AuthorDto authorDto) {
-        if (authorDto == null){
-            throw new IllegalArgumentException("Author cannot be null");
+    public void saveAuthor(Author author) {
+        if (author == null){
+            throw new AuthorCannotBeNull();
         }
-        Author author = AuthorMapper.toEntity(authorDto);
         authorRepository.save(author);
     }
 
     @Transactional(readOnly = true)
     public Optional<AuthorDto> getAuthor(long id){
-        Author author = authorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Author not found"));
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException());
         return Optional.of(AuthorMapper.toDto(author));
     }
 
@@ -42,7 +43,7 @@ public class AuthorService {
     @Transactional
     public void deleteAuthor(long id){
         if(!authorRepository.existsById(id)){
-            throw new IllegalArgumentException("Author does not exist");
+            throw new AuthorNotFoundException();
         }
         authorRepository.deleteById(id);
     }
@@ -50,10 +51,10 @@ public class AuthorService {
     @Transactional
     public AuthorDto updateAuthor(long id, AuthorDto authorDtoDetails) {
         if (authorDtoDetails == null) {
-            throw new IllegalArgumentException("Author details cannot be null");
+            throw new AuthorCannotBeNull();
         }
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+                .orElseThrow(() -> new AuthorNotFoundException());
 
         if (authorDtoDetails.getName() != null) {
             author.setAuthorName(authorDtoDetails.getName());
