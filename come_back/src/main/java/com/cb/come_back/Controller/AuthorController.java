@@ -2,7 +2,6 @@ package com.cb.come_back.Controller;
 
 import com.cb.come_back.DtoModel.AuthorDto;
 import com.cb.come_back.Entity.Author;
-import com.cb.come_back.Exception_handling.AuthorNotFoundException;
 import com.cb.come_back.Service.AuthorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/author")
+@RequestMapping("/api/v1/author")
 @AllArgsConstructor
 public class AuthorController {
 
@@ -44,7 +43,6 @@ public class AuthorController {
         List<AuthorDto> authors = authorService.getAllAuthors();
         return ResponseEntity.status(HttpStatus.OK).body(authors);
     }
-
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAuthorById(@PathVariable Long id) {

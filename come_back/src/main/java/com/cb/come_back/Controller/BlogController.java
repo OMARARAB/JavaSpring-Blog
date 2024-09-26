@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
-@RequestMapping("/api/blog")
+@RequestMapping("/api/v1/blog")
 @AllArgsConstructor
 public class BlogController {
 
